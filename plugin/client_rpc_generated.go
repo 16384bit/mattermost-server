@@ -716,6 +716,94 @@ func (s *APIRPCServer) UpdateUser(args *UpdateUserArgs, returns *UpdateUserRetur
 	return nil
 }
 
+type GetUserStatusArgs struct {
+	A string
+}
+
+type GetUserStatusReturns struct {
+	A *model.Status
+	B *model.AppError
+}
+
+func (g *APIRPCClient) GetUserStatus(userId string) (*model.Status, *model.AppError) {
+	_args := &GetUserStatusArgs{userId}
+	_returns := &GetUserStatusReturns{}
+	if err := g.client.Call("Plugin.GetUserStatus", _args, _returns); err != nil {
+		g.log.Error("RPC call to GetUserStatus API failed.", mlog.Err(err))
+	}
+	return _returns.A, _returns.B
+}
+
+func (s *APIRPCServer) GetUserStatus(args *GetUserStatusArgs, returns *GetUserStatusReturns) error {
+	if hook, ok := s.impl.(interface {
+		GetUserStatus(userId string) (*model.Status, *model.AppError)
+	}); ok {
+		returns.A, returns.B = hook.GetUserStatus(args.A)
+	} else {
+		return fmt.Errorf("API GetUserStatus called but not implemented.")
+	}
+	return nil
+}
+
+type GetUserStatusesByIdsArgs struct {
+	A []string
+}
+
+type GetUserStatusesByIdsReturns struct {
+	A []*model.Status
+	B *model.AppError
+}
+
+func (g *APIRPCClient) GetUserStatusesByIds(userIds []string) ([]*model.Status, *model.AppError) {
+	_args := &GetUserStatusesByIdsArgs{userIds}
+	_returns := &GetUserStatusesByIdsReturns{}
+	if err := g.client.Call("Plugin.GetUserStatusesByIds", _args, _returns); err != nil {
+		g.log.Error("RPC call to GetUserStatusesByIds API failed.", mlog.Err(err))
+	}
+	return _returns.A, _returns.B
+}
+
+func (s *APIRPCServer) GetUserStatusesByIds(args *GetUserStatusesByIdsArgs, returns *GetUserStatusesByIdsReturns) error {
+	if hook, ok := s.impl.(interface {
+		GetUserStatusesByIds(userIds []string) ([]*model.Status, *model.AppError)
+	}); ok {
+		returns.A, returns.B = hook.GetUserStatusesByIds(args.A)
+	} else {
+		return fmt.Errorf("API GetUserStatusesByIds called but not implemented.")
+	}
+	return nil
+}
+
+type UpdateUserStatusArgs struct {
+	A string
+	B string
+}
+
+type UpdateUserStatusReturns struct {
+	A *model.Status
+	B *model.AppError
+}
+
+func (g *APIRPCClient) UpdateUserStatus(status, userId string) (*model.Status, *model.AppError) {
+	_args := &UpdateUserStatusArgs{status, userId}
+	_returns := &UpdateUserStatusReturns{}
+	if err := g.client.Call("Plugin.UpdateUserStatus", _args, _returns); err != nil {
+		g.log.Error("RPC call to UpdateUserStatus API failed.", mlog.Err(err))
+	}
+	return _returns.A, _returns.B
+}
+
+func (s *APIRPCServer) UpdateUserStatus(args *UpdateUserStatusArgs, returns *UpdateUserStatusReturns) error {
+	if hook, ok := s.impl.(interface {
+		UpdateUserStatus(status, userId string) (*model.Status, *model.AppError)
+	}); ok {
+		returns.A, returns.B = hook.UpdateUserStatus(args.A, args.B)
+	} else {
+		return fmt.Errorf("API UpdateUserStatus called but not implemented.")
+	}
+	return nil
+}
+
 type CreateTeamArgs struct {
 	A *model.Team
 }
