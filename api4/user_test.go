@@ -1443,7 +1443,7 @@ func TestGetRecentlyActiveUsersInTeam(t *testing.T) {
 	Client := th.Client
 	teamId := th.BasicTeam.Id
 
-	th.App.SetStatusOnline(th.BasicUser.Id, "", true)
+	th.App.SetStatusOnline(th.BasicUser.Id, true)
 
 	rusers, resp := Client.GetRecentlyActiveUsersInTeam(teamId, 0, 60, "")
 	CheckNoError(t, resp)
